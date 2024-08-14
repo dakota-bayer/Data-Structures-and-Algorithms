@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataStructures.SinglyLinkedList
+﻿namespace DataStructures.SinglyLinkedList
 {
     public class Node
     {
@@ -12,9 +6,14 @@ namespace DataStructures.SinglyLinkedList
         public Node? next { get; set; }
 
         public Node(int data)
-        { 
+        {
             this.data = data;
             next = null;
+        }
+
+        public bool HasNext()
+        {
+            return next != null;
         }
     }
 }

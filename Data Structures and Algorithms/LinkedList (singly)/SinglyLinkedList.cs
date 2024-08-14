@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataStructures.SinglyLinkedList
+﻿namespace DataStructures.SinglyLinkedList
 {
     public class SinglyLinkedList
     {
@@ -28,7 +22,7 @@ namespace DataStructures.SinglyLinkedList
             else
             {
                 var currentNode = head;
-                while (currentNode.next != null)
+                while (currentNode.HasNext())
                 {
                     currentNode = currentNode.next;
                 }
@@ -38,8 +32,10 @@ namespace DataStructures.SinglyLinkedList
             length++;
         }
 
-        public void InsertAt(int index, Node node)
+        public void InsertAt(int index, int data)
         {
+            var insertNode = new Node(data);
+
             if (index < 0 || index > length)
             {
                 throw new IndexOutOfRangeException();
@@ -47,7 +43,7 @@ namespace DataStructures.SinglyLinkedList
 
             if (head == null)
             {
-                head = node;
+                head = insertNode;
                 length = 1;
                 return;
             }
@@ -55,8 +51,8 @@ namespace DataStructures.SinglyLinkedList
             if (index == 0)
             {
                 var previousHead = head;
-                head = node;
-                head.next = previousHead;
+                head = insertNode;
+                insertNode.next = previousHead;
                 length++;
                 return;
             }
@@ -69,7 +65,89 @@ namespace DataStructures.SinglyLinkedList
                 currentIndex++;
             }
 
+            var currentNext = currentNode.next;
+            currentNode.next = insertNode;
+            insertNode.next = currentNext;
+
+            length++;
+        }
+
+        public override string ToString()
+        {
+            if (head == null)
+            {
+                return string.Empty;
+            }
+
             var current = head;
+            var str = current.data.ToString();
+
+            while (current.HasNext())
+            {
+                current = current.next;
+                str += $" {current.data}";
+            }
+
+            return str;
+        }
+
+        public bool RemoveFirst(int removalData)
+        {
+            var current = head;
+            var previous = head;
+
+            while (current != null && current.data != removalData)
+            {
+                previous = current;
+                current = current.next;
+            }
+
+            if (current != null && current.data == removalData)
+            {
+                // implement removal logic here
+                if (current == head)
+                {
+                    head = current.next;
+                }
+                else
+                {
+                    previous.next = current.next;
+                }
+                length--;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void RemoveAll(int removalData)
+        {
+            var current = head;
+            var previous = head;
+
+            while (current != null)
+            {
+                if (current.data == removalData)
+                {
+                    if (current == head)
+                    {
+                        previous = null;
+                        head = current.next;
+                    }
+                    else
+                    {
+                        previous.next = current.next;
+                        previous = previous;
+                    }
+                    length--;
+                }
+                else
+                {
+                    previous = current;
+                }
+
+                current = current.next;
+            }
         }
     }
 }
